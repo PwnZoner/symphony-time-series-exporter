@@ -1,0 +1,11 @@
+# Dependency directories
+node_modules/
+
+# Output directories
+composer_csv_exports/
+composer_data/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

@@ -1,0 +1,22 @@
+{
+  "name": "symphony-time-series-exporter",
+  "version": "1.0.0",
+  "description": "A tool to export time series data from Composer.trade",
+  "type": "module",
+  "main": "export.js",
+  "scripts": {
+    "start": "node export.js",
+    "get-accounts": "node get_accounts.js"
+  },
+  "keywords": [
+    "composer",
+    "trading",
+    "finance"
+  ],
+  "author": "J-Pwn & Gemini",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "papaparse": "^5.4.1"
+  }
+}
