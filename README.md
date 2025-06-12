@@ -1,349 +1,171 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2822
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;\f2\fswiss\fcharset0 Helvetica-Oblique;
+# Symphony Time Series Exporter
+
+A Node.js tool to automatically discover and export time series data for all your Composer symphonies into organized CSV files.
+
+*Created by J-Pwn, vibe coding with Gemini.*
+
+**Disclaimer:** This tool is a community project and is not affiliated with, endorsed, or supported by Composer.trade. It is provided as-is in the hope that it will be useful. Please use it at your own risk.
+
+---
+
+### Features
+
+-   **Automatic Discovery:** No need to manually list your symphony IDs. The script connects to the API and finds every symphony in your specified accounts.
+-   **Multi-Account Support:** Export data from multiple accounts (e.g., IRA, Taxable) in a single run.
+-   **Organized Output:** Creates separate folders for each account and uses the symphony's name for clear, readable CSV filenames.
+-   **Robust & Configurable:** Easily configure your accounts and authentication token. Includes a delay to respect API rate limits.
+
+---
+
+### Prerequisites
+
+You must have **[Node.js](https://nodejs.org/en)** installed on your computer. You can download it from the official website.
+
+---
+
+### Setup Instructions
+
+Follow these steps to get the tool running on your machine.
+
+#### Step 1: Create Your Project Folder
+
+Create a new folder on your computer for this project. For example, you could name it `composer-exporter`. Open this folder in your favorite code editor (like VS Code) and open a terminal/command line window inside it.
+
+#### Step 2: Create the `package.json` File
+
+This file tells Node.js about your project and its dependencies. Create a file named `package.json` inside your project folder and copy the following content into it:
+
+```json
+{
+  "name": "symphony-time-series-exporter",
+  "version": "1.0.0",
+  "description": "A tool to export time series data from Composer.trade",
+  "type": "module",
+  "main": "export.js",
+  "scripts": {
+    "start": "node export.js",
+    "get-accounts": "node get_accounts.js"
+  },
+  "keywords": [
+    "composer",
+    "trading",
+    "finance"
+  ],
+  "author": "J-Pwn & Gemini",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "papaparse": "^5.4.1"
+  }
 }
-{\colortbl;\red255\green255\blue255;\red21\green21\blue22;\red13\green62\blue197;\red69\green73\blue76;
-\red228\green234\blue244;}
-{\*\expandedcolortbl;;\cssrgb\c10588\c10980\c11373;\cssrgb\c4314\c34118\c81569;\cssrgb\c34118\c35686\c37255;
-\cssrgb\c91373\c93333\c96471;}
-{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
-{\list\listtemplateid2\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid101\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid2}
-{\list\listtemplateid3\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid201\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid3}
-{\list\listtemplateid4\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid301\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid4}
-{\list\listtemplateid5\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid401\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid5}
-{\list\listtemplateid6\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid501\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid6}}
-{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}{\listoverride\listid4\listoverridecount0\ls4}{\listoverride\listid5\listoverridecount0\ls5}{\listoverride\listid6\listoverridecount0\ls6}}
-\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\deftab720
-\pard\pardeftab720\sa160\partightenfactor0
+```
 
-\f0\b\fs44 \cf2 \expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Symphony Time Series Exporter\
-\pard\pardeftab720\sa320\partightenfactor0
+#### Step 3: Install Dependencies
 
-\f1\b0\fs32 \cf2 A Node.js tool to automatically discover and export time series data for all your Composer symphonies into organized CSV files.\
-\pard\pardeftab720\sa320\partightenfactor0
+In your terminal, run the following command. This will download and install the required libraries (`axios` for API calls and `papaparse` for creating CSV files).
 
-\f2\i \cf2 Created by J-Pwn, vibe coding with Gemini.
-\f1\i0 \
-\pard\pardeftab720\sa320\partightenfactor0
+```bash
+npm install
+```
 
-\f0\b \cf2 Disclaimer:
-\f1\b0  This tool is a community project and is not affiliated with, endorsed, or supported by Composer.trade. It is provided as-is in the hope that it will be useful. Please use it at your own risk.\
-\pard\pardeftab720\sa160\partightenfactor0
+---
 
-\f0\b \cf2 Features\
-\pard\tx220\tx720\pardeftab720\li720\fi-720\sa160\partightenfactor0
-\ls1\ilvl0\cf2 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Automatic Discovery:
-\f1\b0  No need to manually list your symphony IDs. The script connects to the API and finds every symphony in your specified accounts.\
-\ls1\ilvl0
-\f0\b \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Multi-Account Support:
-\f1\b0  Export data from multiple accounts (e.g., IRA, Taxable) in a single run.\
-\ls1\ilvl0
-\f0\b \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Organized Output:
-\f1\b0  Creates separate folders for each account and uses the symphony's name for clear, readable CSV filenames.\
-\ls1\ilvl0
-\f0\b \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Robust & Configurable:
-\f1\b0  Easily configure your accounts and authentication token. Includes a delay to respect API rate limits.\
-\pard\pardeftab720\sa160\partightenfactor0
+### Configuration
 
-\f0\b \cf2 Prerequisites\
-\pard\pardeftab720\sa320\partightenfactor0
+Now you need to get your personal information (Authentication Token and Account IDs) to configure the scripts.
 
-\f1\b0 \cf2 You must have {\field{\*\fldinst{HYPERLINK "https://nodejs.org/en"}}{\fldrslt 
-\f0\b \cf3 \ul \ulc3 \strokec3 Node.js}} installed on your computer. You can download it from the official website.\
-\pard\pardeftab720\sa160\partightenfactor0
+#### Step 4: Get Your Authentication Token
 
-\f0\b \cf2 Setup Instructions\
-\pard\pardeftab720\sa320\partightenfactor0
+The script needs an authorization token to act on your behalf. This token is temporary and usually expires after a few hours. **You will need to repeat this step each time you run the script.**
 
-\f1\b0 \cf2 Follow these steps to get the tool running on your machine.\
-\pard\pardeftab720\sa160\partightenfactor0
+1.  Open the Google Chrome browser (recommended).
+2.  Go to **[app.composer.trade](https://app.composer.trade/)** and log in to your account.
+3.  Open the **Developer Tools**. You can do this by pressing **F12**, or **Ctrl+Shift+I** (on Windows/Linux), or **Cmd+Option+I** (on Mac).
+4.  Click on the **"Network"** tab within the Developer Tools.
+5.  Click on any symphony or dashboard in the Composer app to generate network traffic. You will see a list of requests appearing in the Network tab.
+6.  Look for any request going to **`stagehand-api.composer.trade`**. Click on it.
+7.  A new panel will open. Stay in the **"Headers"** tab and scroll down until you see the **"Request Headers"** section.
+8.  Find the header named `authorization`. Its value is your token. It will start with `Bearer ...`.
+9.  **Copy the entire value**, including the word "Bearer" and the long string of characters that follows. This is your `AUTH_TOKEN`.
 
-\f0\b \cf2 Step 1: Create Your Project Folder\
-\pard\pardeftab720\sa320\partightenfactor0
+#### Step 5: Find Your Account IDs (Easy Method)
 
-\f1\b0 \cf2 Create a new folder on your computer for this project. For example, you could name it 
-\fs28 \cf4 \cb5 \strokec4 composer-exporter
-\fs32 \cf2 \cb1 \strokec2 . Open this folder in your favorite code editor (like VS Code) and open a terminal/command line window inside it.\
-\pard\pardeftab720\sa160\partightenfactor0
+To make finding your Account IDs easy, we've included a helper script.
 
-\f0\b \cf2 Step 2: Create the 
-\f1\b0\fs28 \cf4 \cb5 \strokec4 package.json
-\f0\b\fs32 \cf2 \cb1 \strokec2  File\
-\pard\pardeftab720\sa320\partightenfactor0
+1.  Create a file named `get_accounts.js` in your project folder.
+2.  Copy the code from the **`get_accounts.js`** file provided in this project.
+3.  Paste your `AUTH_TOKEN` (from Step 4) into the `AUTH_TOKEN` variable at the top of this helper script.
+4.  In your terminal, run the script:
+    ```bash
+    npm run get-accounts
+    ```
+5.  The script will print a list of all your accounts with their names and IDs. It will look something like this:
+    ```
+    ✅ Found 2 accounts:
+    --------------------------------
+    Account Name: IRA
+    Account ID:   9c5cc1f7-6cdf-41f1-8753-7ba3311e4fc4
+    --------------------------------
+    Account Name: Stocks
+    Account ID:   0e5fcc23-3404-487d-aec6-c56f2598bdaf
+    --------------------------------
+    ```
+6.  Keep these IDs handy for the next step.
 
-\f1\b0 \cf2 This file tells Node.js about your project and its dependencies. Create a file named 
-\fs28 \cf4 \cb5 \strokec4 package.json
-\fs32 \cf2 \cb1 \strokec2  inside your project folder and copy the following content into it:\
-\pard\pardeftab720\partightenfactor0
+#### Step 6: Set Up the Main Exporter Script
 
-\fs28 \cf4 \cb5 \strokec4 \{\
-  "name": "symphony-time-series-exporter",\
-  "version": "1.0.0",\
-  "description": "A tool to export time series data from Composer.trade",\
-  "type": "module",\
-  "main": "export.js",\
-  "scripts": \{\
-    "start": "node export.js",\
-    "get-accounts": "node get_accounts.js"\
-  \},\
-  "keywords": [\
-    "composer",\
-    "trading",\
-    "finance"\
-  ],\
-  "author": "",\
-  "license": "ISC",\
-  "dependencies": \{\
-    "axios": "^1.7.2",\
-    "papaparse": "^5.4.1"\
-  \}\
-\}\
-\pard\pardeftab720\partightenfactor0
-\cf4 \cb1 \
-\pard\pardeftab720\sa160\partightenfactor0
+1.  Create a file named `export.js` in your project folder.
+2.  Copy the code from the **`export.js`** file provided in this project.
+3.  Paste your `AUTH_TOKEN` (from Step 4) into the `AUTH_TOKEN` variable at the top of the `export.js` file.
+4.  Update the `ACCOUNTS_TO_EXPORT` array with the Account IDs you found in Step 5.
 
-\f0\b\fs32 \cf2 \strokec2 Step 3: Install Dependencies\
-\pard\pardeftab720\sa320\partightenfactor0
+---
 
-\f1\b0 \cf2 In your terminal, run the following command. This will download and install the required libraries (
-\fs28 \cf4 \cb5 \strokec4 axios
-\fs32 \cf2 \cb1 \strokec2  for API calls and 
-\fs28 \cf4 \cb5 \strokec4 papaparse
-\fs32 \cf2 \cb1 \strokec2  for creating CSV files).\
-\pard\pardeftab720\partightenfactor0
+### Running the Exporter
 
-\fs28 \cf4 \cb5 \strokec4 npm install\
-\pard\pardeftab720\partightenfactor0
-\cf4 \cb1 \
-\pard\pardeftab720\sa160\partightenfactor0
+Once everything is set up and configured, run the main script from your terminal:
 
-\f0\b\fs32 \cf2 \strokec2 Configuration\
-\pard\pardeftab720\sa320\partightenfactor0
+```bash
+npm start
+```
 
-\f1\b0 \cf2 Now you need to get your personal information (Authentication Token and Account IDs) to configure the scripts.\
-\pard\pardeftab720\sa160\partightenfactor0
+The script will now discover all the symphonies in each account and download the time series data into CSV files inside a `composer_csv_exports` folder.
 
-\f0\b \cf2 Step 4: Get Your Authentication Token\
-\pard\pardeftab720\sa160\partightenfactor0
+---
 
-\f1\b0 \cf2 The script needs an authorization token to act on your behalf. This token is temporary and usually expires after a few hours. 
-\f0\b You will need to repeat this step each time you run the script.
-\f1\b0 \
-\pard\tx220\tx720\pardeftab720\li720\fi-720\sa160\partightenfactor0
-\ls2\ilvl0\cf2 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Open the Google Chrome browser (recommended).\
-\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	2	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Go to {\field{\*\fldinst{HYPERLINK "https://app.composer.trade/"}}{\fldrslt 
-\f0\b \cf3 \ul \ulc3 \strokec3 app.composer.trade}} and log in to your account.\
-\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	3	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Open the 
-\f0\b Developer Tools
-\f1\b0 . You can do this by pressing 
-\f0\b F12
-\f1\b0 , or 
-\f0\b Ctrl+Shift+I
-\f1\b0  (on Windows/Linux), or 
-\f0\b Cmd+Option+I
-\f1\b0  (on Mac).\
-\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	4	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Click on the 
-\f0\b "Network"
-\f1\b0  tab within the Developer Tools.\
-\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	5	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Click on any symphony or dashboard in the Composer app to generate network traffic. You will see a list of requests appearing in the Network tab.\
-\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	6	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Look for any request going to 
-\fs28 \cf4 \cb5 \strokec4 stagehand-api.composer.trade
-\fs32 \cf2 \cb1 \strokec2 . Click on it.\
-\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	7	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 A new panel will open. Stay in the 
-\f0\b "Headers"
-\f1\b0  tab and scroll down until you see the 
-\f0\b "Request Headers"
-\f1\b0  section.\
-\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	8	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Find the header named 
-\fs28 \cf4 \cb5 \strokec4 authorization
-\fs32 \cf2 \cb1 \strokec2 . Its value is your token. It will start with 
-\fs28 \cf4 \cb5 \strokec4 Bearer ...
-\fs32 \cf2 \cb1 \strokec2 .\
-\pard\tx220\tx720\pardeftab720\li720\fi-720\sa160\partightenfactor0
-\ls2\ilvl0
-\f0\b \cf2 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	9	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Copy the entire value
-\f1\b0 , including the word "Bearer" and the long string of characters that follows. This is your 
-\fs28 \cf4 \cb5 \strokec4 AUTH_TOKEN
-\fs32 \cf2 \cb1 \strokec2 .\
-\pard\pardeftab720\sa160\partightenfactor0
+### Customization (Advanced)
 
-\f0\b \cf2 Step 5: Find Your Account IDs (Easy Method)\
-\pard\pardeftab720\sa160\partightenfactor0
+#### Changing Output to JSON
 
-\f1\b0 \cf2 To make finding your Account IDs easy, we've included a helper script.\
-\pard\tx220\tx720\pardeftab720\li720\fi-720\sa160\partightenfactor0
-\ls3\ilvl0\cf2 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Create a file named 
-\fs28 \cf4 \cb5 \strokec4 get_accounts.js
-\fs32 \cf2 \cb1 \strokec2  in your project folder.\
-\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	2	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Copy the code from the 
-\fs28 \cf4 \cb5 \strokec4 get_accounts.js
-\fs32 \cf2 \cb1 \strokec2  file below into it.\
-\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	3	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Paste your 
-\fs28 \cf4 \cb5 \strokec4 AUTH_TOKEN
-\fs32 \cf2 \cb1 \strokec2  (from Step 4) into the 
-\fs28 \cf4 \cb5 \strokec4 AUTH_TOKEN
-\fs32 \cf2 \cb1 \strokec2  variable at the top of this helper script.\
-\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	4	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 In your terminal, run the script:\uc0\u8232 
-\fs28 \cf4 \cb5 \strokec4 npm run get-accounts\
-\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
-\ls3\ilvl0\cf4 \cb1 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	5	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec4 \
-\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
-\ls3\ilvl0\cf4 \cb5 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	6	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec4 \uc0\u8232 
-\fs32 \cf2 \cb1 \strokec2 \
-\pard\tx220\tx720\pardeftab720\li720\fi-720\sa160\partightenfactor0
-\ls3\ilvl0\cf2 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	7	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 The script will print a list of all your accounts with their names and IDs. It will look something like this:\uc0\u8232 
-\fs28 \cf4 \cb5 \strokec4 \uc0\u9989  Found 2 accounts:\
-\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
-\ls3\ilvl0\cf4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	8	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec4 --------------------------------\
-\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	9	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec4 Account Name: IRA\
-\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	10	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec4 Account ID:   9c5cc1f7-6cdf-41f1-8753-7ba3311e4fc4\
-\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	11	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec4 --------------------------------\
-\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	12	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec4 Account Name: Stocks\
-\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	13	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec4 Account ID:   0e5fcc23-3404-487d-aec6-c56f2598bdaf\
-\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	14	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec4 --------------------------------\
-\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
-\ls3\ilvl0\cf4 \cb1 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	15	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec4 \
-\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
-\ls3\ilvl0\cf4 \cb5 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	16	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec4 \uc0\u8232 
-\fs32 \cf2 \cb1 \strokec2 \
-\pard\tx220\tx720\pardeftab720\li720\fi-720\sa160\partightenfactor0
-\ls3\ilvl0\cf2 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	17	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Keep these IDs handy for the next step.\
-\pard\pardeftab720\sa160\partightenfactor0
+If you'd prefer to save the raw JSON data instead of CSV files, you can easily modify the `export.js` script.
 
-\f0\b \cf2 Step 6: Set Up the Main Exporter Script\
-\pard\tx220\tx720\pardeftab720\li720\fi-720\sa160\partightenfactor0
-\ls4\ilvl0
-\f1\b0 \cf2 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Create a file named 
-\fs28 \cf4 \cb5 \strokec4 export.js
-\fs32 \cf2 \cb1 \strokec2  in your project folder.\
-\ls4\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	2	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Copy the code from the 
-\fs28 \cf4 \cb5 \strokec4 export.js
-\fs32 \cf2 \cb1 \strokec2  file below into it.\
-\ls4\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	3	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Paste your 
-\fs28 \cf4 \cb5 \strokec4 AUTH_TOKEN
-\fs32 \cf2 \cb1 \strokec2  (from Step 4) into the 
-\fs28 \cf4 \cb5 \strokec4 AUTH_TOKEN
-\fs32 \cf2 \cb1 \strokec2  variable at the top of the 
-\fs28 \cf4 \cb5 \strokec4 export.js
-\fs32 \cf2 \cb1 \strokec2  file.\
-\ls4\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	4	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Update the 
-\fs28 \cf4 \cb5 \strokec4 ACCOUNTS_TO_EXPORT
-\fs32 \cf2 \cb1 \strokec2  array with the Account IDs you found in Step 5.\
-\pard\pardeftab720\sa160\partightenfactor0
+1.  Find the `try {...}` block inside the main `for` loop (the one that starts with `// Step 2: Loop through...`).
+2.  Replace the entire block with the following code. The key changes are removing the CSV conversion and saving the `timeseriesData` object directly.
 
-\f0\b \cf2 Running the Exporter\
-\pard\pardeftab720\sa320\partightenfactor0
+```javascript
+// --- Replacement block for JSON output ---
+try {
+  console.log(`   Fetching timeseries for: ${symphonyName}`);
+  const timeseriesUrl = `https://stagehand-api.composer.trade/api/v1/portfolio/accounts/${account.accountId}/symphonies/${symphonyId}`;
+  const timeseriesResponse = await axios.get(timeseriesUrl, { headers });
+  const timeseriesData = timeseriesResponse.data;
 
-\f1\b0 \cf2 Once everything is set up and configured, run the main script from your terminal:\
-\pard\pardeftab720\partightenfactor0
+  // Save the raw JSON data
+  const jsonString = JSON.stringify(timeseriesData, null, 2); // The '2' makes the JSON readable
+  const filePath = `${accountDir}/${safeFilename}.json`; // Note the .json extension
+  await fs.writeFile(filePath, jsonString);
+  console.log(`   -> ✅ Saved to ${filePath}`);
 
-\fs28 \cf4 \cb5 \strokec4 npm start\
-\pard\pardeftab720\partightenfactor0
-\cf4 \cb1 \
-\pard\pardeftab720\sa320\partightenfactor0
-
-\fs32 \cf2 \strokec2 The script will now discover all the symphonies in each account and download the time series data into CSV files inside a 
-\fs28 \cf4 \cb5 \strokec4 composer_csv_exports
-\fs32 \cf2 \cb1 \strokec2  folder.\
-\pard\pardeftab720\sa160\partightenfactor0
-
-\f0\b \cf2 Customization (Advanced)\
-\pard\pardeftab720\sa160\partightenfactor0
-\cf2 Changing Output to JSON\
-\pard\pardeftab720\sa160\partightenfactor0
-
-\f1\b0 \cf2 If you'd prefer to save the raw JSON data instead of CSV files, you can easily modify the 
-\fs28 \cf4 \cb5 \strokec4 export.js
-\fs32 \cf2 \cb1 \strokec2  script.\
-\pard\tx220\tx720\pardeftab720\li720\fi-720\sa160\partightenfactor0
-\ls5\ilvl0\cf2 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Find the 
-\fs28 \cf4 \cb5 \strokec4 try \{...\}
-\fs32 \cf2 \cb1 \strokec2  block inside the main 
-\fs28 \cf4 \cb5 \strokec4 for
-\fs32 \cf2 \cb1 \strokec2  loop (the one that starts with 
-\fs28 \cf4 \cb5 \strokec4 // Step 2: Loop through...
-\fs32 \cf2 \cb1 \strokec2 ).\
-\ls5\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	2	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Replace the entire block with the following code. The key changes are removing the CSV conversion and saving the 
-\fs28 \cf4 \cb5 \strokec4 timeseriesData
-\fs32 \cf2 \cb1 \strokec2  object directly.\
-\pard\pardeftab720\partightenfactor0
-
-\fs28 \cf4 \cb5 \strokec4 // --- Replacement block for JSON output ---\
-try \{\
-  console.log(`   Fetching timeseries for: $\{symphonyName\}`);\
-  const timeseriesUrl = `https://stagehand-api.composer.trade/api/v1/portfolio/accounts/$\{account.accountId\}/symphonies/$\{symphonyId\}`;\
-  const timeseriesResponse = await axios.get(timeseriesUrl, \{ headers \});\
-  const timeseriesData = timeseriesResponse.data;\
-\
-  // Save the raw JSON data\
-  const jsonString = JSON.stringify(timeseriesData, null, 2); // The '2' makes the JSON readable\
-  const filePath = `$\{accountDir\}/$\{safeFilename\}.json`; // Note the .json extension\
-  await fs.writeFile(filePath, jsonString);\
-  console.log(`   -> \uc0\u9989  Saved to $\{filePath\}`);\
-\
-\} catch (error) \{\
-  // ... (error handling remains the same)\
-\}\
-// ...\
-\pard\pardeftab720\partightenfactor0
-\cf4 \cb1 \
-\pard\pardeftab720\sa160\partightenfactor0
-
-\f0\b\fs32 \cf2 \strokec2 Troubleshooting\
-\pard\tx220\tx720\pardeftab720\li720\fi-720\sa160\partightenfactor0
-\ls6\ilvl0
-\f1\b0\fs28 \cf4 \cb5 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec4 CRITICAL: Failed to discover symphonies...
-\fs32 \cf2 \cb1 \strokec2 : This usually means your 
-\fs28 \cf4 \cb5 \strokec4 AUTH_TOKEN
-\fs32 \cf2 \cb1 \strokec2  is incorrect or has expired. Repeat 
-\f0\b Step 4
-\f1\b0  to get a fresh token.\
-\ls6\ilvl0
-\fs28 \cf4 \cb5 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec4 Failure for ... Reason: Status 429
-\fs32 \cf2 \cb1 \strokec2 : This means you're making too many requests too quickly. Open 
-\fs28 \cf4 \cb5 \strokec4 export.js
-\fs32 \cf2 \cb1 \strokec2  and increase the delay at the bottom of the script from 
-\fs28 \cf4 \cb5 \strokec4 500
-\fs32 \cf2 \cb1 \strokec2  to a higher number like 
-\fs28 \cf4 \cb5 \strokec4 1000
-\fs32 \cf2 \cb1 \strokec2  (1 second). \
+} catch (error) {
+  // ... (error handling remains the same)
 }
+// ...
+```
+
+---
+
+### Troubleshooting
+
+* **`CRITICAL: Failed to discover symphonies...`**: This usually means your `AUTH_TOKEN` is incorrect or has expired. Repeat **Step 4** to get a fresh token.
+* **`Failure for ... Reason: Status 429`**: This means you're making too many requests too quickly. Open `export.js` and increase the delay at the bottom of the script from `500` to a higher number like `1000` (1 second).
+
